@@ -70,6 +70,7 @@ var querySelectorAll = _.curryN(2, (selector, el) => Array.from(el.querySelector
             ])
         )),
         _.flatten,
+        _.filter((el) => el.lineNumber !== "870"),
         _.sortBy(_.pipe(
             _.props(['hour', 'min']),
             _.join('.'),
@@ -77,6 +78,8 @@ var querySelectorAll = _.curryN(2, (selector, el) => Array.from(el.querySelector
         )),
         _.groupBy(_.prop('hour')),
         _.mapObjIndexed(_.pipe(
+            _.juxt([
+                (val, key) => key,
                 _.pipe(
                     _.map(_.pipe(
                         _.props(['min', 'lineNumber']),
@@ -84,6 +87,8 @@ var querySelectorAll = _.curryN(2, (selector, el) => Array.from(el.querySelector
                     )),
                     _.join(',')
                 ),
+            ]),
+            _.join(',')
         )),
         _.values,
         _.join('\n'),
